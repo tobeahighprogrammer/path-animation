@@ -10,7 +10,7 @@ import android.os.Bundle;
 import com.micheal.pathanimation.wave.WaveView;
 
 public class MainActivity extends AppCompatActivity {
-
+    public static final String TAG=MainActivity.class.getSimpleName();
     private WaveView waveView;
     private int capacity=0;
     private Handler ChargeHandler;
