@@ -89,6 +89,10 @@ public class WaveView extends LinearLayout {
         mWave.setLayoutParams(params);
     }
 
+    public void setCharging(boolean isCharging){
+        mWave.setCharging(isCharging);
+    }
+
     @Override
     public Parcelable onSaveInstanceState() {
         // Force our ancestor class to save its state

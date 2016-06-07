@@ -186,18 +186,19 @@ class Wave extends View {
             removeCallbacks(mRefreshProgressRunnable);
             mRefreshProgressRunnable = new RefreshProgressRunnable();
             post(mRefreshProgressRunnable);
-            if (mWaveLength == 0) {
-                startWave();
-            }
+//            if (mWaveLength == 0) {
+//                startWave();
+//            }
         }
     }
 
     public void setCharging(boolean isCharging){
-        if(isCharging==true){
-            removeCallbacks(mRefreshProgressRunnable);
-        }else{
-
-        }
+        removeCallbacks(mRefreshProgressRunnable);
+//        if(isCharging==true){
+//            removeCallbacks(mRefreshProgressRunnable);
+//        }else{
+//
+//        }
     }
 
     @Override
