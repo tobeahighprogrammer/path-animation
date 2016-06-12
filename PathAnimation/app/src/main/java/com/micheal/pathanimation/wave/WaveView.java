@@ -3,6 +3,8 @@ package com.micheal.pathanimation.wave;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -89,8 +91,57 @@ public class WaveView extends LinearLayout {
         mWave.setLayoutParams(params);
     }
 
-    public void setCharging(boolean isCharging){
-        mWave.setCharging(isCharging);
+    private Thread mThread;
+    private Handler handler;
+    private Runnable runnable;
+    public void setChargingStatus(boolean isCharging){
+        if(isCharging){
+            mWave.setCharging(isCharging);
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    while (true) {
+                        mProgress += 25;
+                        if (mProgress > 100) {
+                            mProgress = 0;
+                        }
+                        Message msg=handler.obtainMessage();
+                        msg.obj=mProgress;
+                        handler.sendMessage(msg);
+
+                        try {
+                            Thread.sleep(250);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            };
+            handler=new Handler(){
+                @Override
+                public void handleMessage(Message msg) {
+                    super.handleMessage(msg);
+                    int capacity=(int)msg.obj;
+                    setProgress(capacity);
+                    invalidate();
+                }
+            };
+            mThread = new Thread(runnable);
+            mThread.start();
+        }else {
+            mWave.setCharging(false);
+            handler=null;
+            try{
+                if(mThread!=null){
+                    mThread.join();
+                }
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
+            runnable=null;
+            mThread=null;
+        }
+
     }
 
     @Override
@@ -142,5 +193,17 @@ public class WaveView extends LinearLayout {
                 return new SavedState[size];
             }
         };
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        handler=null;
+        try{
+            mThread.join();
+        }catch (InterruptedException e){
+            e.printStackTrace();
+        }
+        mThread=null;
     }
 }

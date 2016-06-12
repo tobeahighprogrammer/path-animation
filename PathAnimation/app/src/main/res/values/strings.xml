@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">PathAnimation</string>
+    <string name="app_title">animation of battery</string>
+    <string name="btn_charge">charge</string>
+    <string name="btn_discharge">discharge</string>
 </resources>

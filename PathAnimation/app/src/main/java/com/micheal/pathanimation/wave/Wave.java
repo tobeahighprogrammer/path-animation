@@ -55,6 +55,8 @@ class Wave extends View {
     // ω
     private double omega;
 
+    private boolean isCharging=false;
+
     public Wave(Context context, AttributeSet attrs) {
         this(context, attrs, R.attr.waveViewStyle);
 //        initPath();
@@ -185,20 +187,23 @@ class Wave extends View {
         } else {
             removeCallbacks(mRefreshProgressRunnable);
             mRefreshProgressRunnable = new RefreshProgressRunnable();
-            post(mRefreshProgressRunnable);
-//            if (mWaveLength == 0) {
-//                startWave();
-//            }
+            if(!isCharging){
+                post(mRefreshProgressRunnable);
+            }
+
+            if (mWaveLength == 0) {
+                startWave();
+            }
         }
     }
 
     public void setCharging(boolean isCharging){
-        removeCallbacks(mRefreshProgressRunnable);
-//        if(isCharging==true){
-//            removeCallbacks(mRefreshProgressRunnable);
-//        }else{
-//
-//        }
+        this.isCharging=isCharging;
+        if(isCharging==true){
+            removeCallbacks(mRefreshProgressRunnable);
+        }else{
+
+        }
     }
 
     @Override
